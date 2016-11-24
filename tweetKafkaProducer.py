@@ -1,4 +1,4 @@
-import json, inspect
+import json, inspect, sys
 
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
@@ -15,8 +15,14 @@ from config import *
 keys_c = ["careerarc","want","good","tokyo","job","london","wind","rain","love","turkey"]
 mytopic = 'tweet'# ex. 'twitterstream', or 'test' ...
 
+if len (sys.argv) ==2:
+    in_str = sys.argv[1].split(",")
+    producer = KafkaProducer(bootstrap_servers=in_str)
+elif len (sys.argv) ==1:
+    producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
+else:
+    print "Usage: python tweetKafkaProducer.py ip1:9092,ip2:9092,..."
 
-producer = KafkaProducer(bootstrap_servers=['54.187.126.150:9092'])
 ######################################################################
 #Create a handler for the streaming data that stays open...
 ######################################################################
